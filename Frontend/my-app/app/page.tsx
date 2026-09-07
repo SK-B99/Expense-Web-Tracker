@@ -1,10 +1,11 @@
-import SignupPage from "./signup/page";
+import Landing from "@/components/landing-page";
 
 
 export default function Home() {
   return (
   <div>
-  <SignupPage/>
+    <Landing/>
+ 
   </div>
   );
 }
