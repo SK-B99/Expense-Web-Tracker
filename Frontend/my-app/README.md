@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Expense Web Tracker
 
-## Getting Started
+A web application to track income, expenses, and financial summaries — built with Next.js, TypeScript, and Tailwind CSS on the frontend.
 
-First, run the development server:
+## Description
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Expense Web Tracker (branded **Spendify** in the UI) helps users monitor their financial activity through a dashboard that surfaces account balances, income, expenses, and recent transactions at a glance.
+
+## Task Workflow
+
+| Step | Task | Status |
+|------|------|--------|
+| 1 | Design dashboard screens | ✅ In progress — core layout built |
+| 2 | Create expense management APIs | ⬜ Not started |
+| 3 | Store financial records in a database | ⬜ Not started |
+| 4 | Display reports and summaries | 🟡 UI scaffolded (static data) |
+| 5 | Implement authentication | 🟡 UI scaffolded (login/signup pages, no backend wiring yet) |
+
+## Project Structure
+
+```
+Expense Web Tracker/
+├── Backend/
+└── Frontend/
+    └── my-app/
+        ├── app/
+        │   ├── dashboard/
+        │   │   └── page.tsx        # Main dashboard route
+        │   ├── login/
+        │   │   └── page.tsx
+        │   ├── signup/
+        │   │   └── page.tsx
+        │   ├── privacy/
+        │   │   └── page.tsx
+        │   ├── terms/
+        │   │   └── page.tsx
+        │   ├── layout.tsx
+        │   ├── page.tsx             # Landing page
+        │   └── globals.css
+        │
+        ├── components/
+        │   ├── sidebar.tsx          # Collapsible/responsive nav sidebar
+        │   ├── header.tsx           # Top bar, greeting, add-transaction trigger
+        │   ├── cards.tsx            # Dashboard summary cards
+        │   ├── charts.tsx           # Spending overview chart
+        │   ├── recent.tsx           # Recent transactions list
+        │   ├── transaction-form.tsx # Add transaction modal/form
+        │   ├── landing-page.tsx
+        │   ├── login-form.tsx
+        │   ├── signup-form.tsx
+        │   └── ui/                  # Shared UI primitives (button, card, input, etc.)
+        │
+        ├── hooks/
+        ├── lib/
+        ├── public/
+        └── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Frontend Progress
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Dashboard (`app/dashboard/page.tsx`)
+- Responsive shell with a collapsible sidebar (desktop) and slide-over drawer (mobile).
+- Sidebar navigation (`Overview`, `Transactions`, `Reports`) driven by local view state rather than routing, since these represent views within the dashboard rather than separate pages.
+- Header with a live-formatted date, personalized greeting, and an "Add transaction" action that opens `TransactionForm`.
+- Summary cards for balance, income, and expenses.
+- Placeholder sections for the spending chart and recent transactions, ready to be connected to real data.
+- Month filter (This month / Last month) scaffolded in the UI; not yet wired to actual data filtering.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Auth Pages
+- `login/page.tsx` and `signup/page.tsx` exist with accompanying form components (`login-form.tsx`, `signup-form.tsx`).
+- These are currently UI-only — no backend authentication is wired up yet (Step 5 pending).
 
-## Learn More
+### Other Pages
+- Landing page (`app/page.tsx` + `landing-page.tsx`).
+- Static `privacy` and `terms` pages.
 
-To learn more about Next.js, take a look at the following resources:
+## Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Framework:** Next.js (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Icons:** lucide-react
+- **UI primitives:** Custom components (`components/ui`)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Remaining Work
 
-## Deploy on Vercel
+- [ ] Build expense management APIs (Step 2)
+- [ ] Set up database schema and persistence for financial records (Step 3)
+- [ ] Connect dashboard cards, charts, and recent transactions to real data
+- [ ] Wire the month filter to actual filtered queries
+- [ ] Implement authentication (Step 5) and protect the dashboard route
+- [ ] Connect `login-form.tsx` / `signup-form.tsx` to backend auth endpoints
+- [ ] Build out dedicated Transactions and Reports views (currently placeholders)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Getting Started (Frontend)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+cd Frontend/my-app
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Getting Started (Backend)
+
+_Backend setup instructions to be added once the API and database layers are implemented._
