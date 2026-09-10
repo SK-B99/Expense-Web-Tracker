@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { PrismaService } from '../../../prisma/prisma.service'; 
-import { GetDashboardQuery } from './get-dashboard.query'; 
+import { PrismaService } from '../../../prisma/prisma.service.js'; 
+import { GetDashboardQuery } from './get-dashboard.query.js'; 
 @QueryHandler(GetDashboardQuery)
 export class GetDashboardHandler
   implements IQueryHandler<GetDashboardQuery>

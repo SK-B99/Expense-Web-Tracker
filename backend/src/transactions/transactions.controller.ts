@@ -5,6 +5,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
+import { Request } from 'express';
 
 import { CreateTransactionDto } from './commands/create-transaction/create-transaction.dto';
 import { CreateTransactionCommand } from './commands/create-transaction/create-transaction.command';
@@ -17,7 +18,7 @@ export class TransactionsController {
 
   @Post()
   async create(
-    @Req() req,
+    @Req() req: Request & { user: { id: number } },
     @Body() dto: CreateTransactionDto,
   ) {
     return this.commandBus.execute(
