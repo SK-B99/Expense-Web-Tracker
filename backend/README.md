@@ -1,114 +1,253 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+Expense Web Tracker
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A full-stack web application for managing personal finances by tracking income, expenses, and financial summaries.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This project was developed as part of Task 3 (Medium) – Expense Tracker Web Application.
 
-## Description
+📌 Task Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Develop a web application to track income, expenses, and financial summaries.
 
-## Project setup
+The application provides a dashboard for users to manage their financial records, view reports, and monitor their overall financial activity.
 
-```bash
-$ npm install
-```
+✨ Features
+📊 Financial dashboard
+💰 Income tracking
+💸 Expense tracking
+📈 Financial summaries and reports
+🔐 User authentication
+🗄️ Database-backed financial records
+🔌 RESTful backend APIs
+📱 Responsive frontend interface
+🏗️ Project Structure
 
-## Compile and run the project
+This project uses a monorepo architecture, with the frontend and backend maintained in a single Git repository.
 
-```bash
-# development
-$ npm run start
+Expense Web Tracker/
+│
+├── Frontend/
+│   └── my-app/
+│       ├── app/
+│       ├── components/
+│       ├── hooks/
+│       ├── lib/
+│       ├── public/
+│       ├── package.json
+│       └── ...
+│
+├── backend/
+│   ├── src/
+│   ├── test/
+│   ├── package.json
+│   └── ...
+│
+└── README.md
 
-# watch mode
-$ npm run start:dev
+Frontend
 
-# production mode
-$ npm run start:prod
-```
+The frontend is located in:
 
-## Run tests
+Frontend/my-app/
 
-```bash
-# unit tests
-$ npm run test
 
-# e2e tests
-$ npm run test:e2e
+It is responsible for the user interface, dashboard, financial records, reports, and interaction with the backend API.
 
-# test coverage
-$ npm run test:cov
-```
+Backend
 
-## Deployment
+The backend is located in:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+backend/
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+It provides the APIs and server-side functionality required to manage financial records, authentication, and database operations.
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+🛠️ Technology Stack
+Frontend
+Next.js
+React
+TypeScript
+Tailwind CSS
+ESLint
+Backend
+NestJS
+TypeScript
+REST API
+Vitest
+ESLint/Oxlint
+Database
 
-## Observability
+The backend is designed to persist financial records in a database.
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+Database configuration may be added or updated as backend development progresses.
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
+🔄 Task Workflow
+Step 1: Design Dashboard Screens
 
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
+Create the application's main dashboard and supporting screens for:
 
-## Resources
+Total income
+Total expenses
+Current balance
+Recent transactions
+Financial summaries
+Reports
+Step 2: Create Expense Management APIs
 
-Check out a few resources that may come in handy when working with NestJS:
+Develop backend APIs for managing financial records, including:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observer](https://observer.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Creating income records
+Creating expense records
+Retrieving transactions
+Updating transactions
+Deleting transactions
+Filtering financial records
+Step 3: Store Financial Records in a Database
 
-## Support
+Persist application data in a database, including:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+User information
+Income records
+Expense records
+Transaction details
+Relevant financial metadata
+Step 4: Display Reports and Summaries
 
-## Stay in touch
+Provide users with useful financial insights such as:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Total income
+Total expenses
+Balance
+Spending summaries
+Income vs. expense comparisons
+Transaction history
+Step 5: Implement Authentication
 
-## License
+Implement secure user authentication so that users can:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Register an account
+Log in
+Access protected resources
+Manage their own financial records
+Log out securely
+🚀 Getting Started
+Prerequisites
+
+Make sure you have installed:
+
+Node.js
+npm
+Git
+Clone the Repository
+git clone https://github.com/SK-B99/Expense-Web-Tracker.git
+cd Expense-Web-Tracker
+
+💻 Running the Frontend
+
+Navigate to the frontend application:
+
+cd Frontend/my-app
+
+
+Install dependencies:
+
+npm install
+
+
+Start the development server:
+
+npm run dev
+
+
+The frontend will normally be available at:
+
+http://localhost:3000
+
+⚙️ Running the Backend
+
+From the project root:
+
+cd backend
+
+
+Install dependencies:
+
+npm install
+
+
+Start the development server:
+
+npm run start:dev
+
+
+The backend API will normally run on:
+
+http://localhost:3000
+
+
+If the frontend and backend use the same port, configure one of them to use a different port.
+
+🔐 Environment Variables
+
+Environment-specific configuration should be stored in .env files and should not be committed to Git.
+
+Example:
+
+DATABASE_URL=your_database_connection_string
+JWT_SECRET=your_secret_key
+PORT=3001
+
+
+Create an appropriate .env file inside the backend and configure the frontend environment variables as required.
+
+🧪 Testing
+Backend Unit Tests
+cd backend
+npm run test
+
+Backend End-to-End Tests
+npm run test:e2e
+
+Test Coverage
+npm run test:cov
+
+📦 Production Build
+Frontend
+cd Frontend/my-app
+npm run build
+
+Backend
+cd backend
+npm run build
+
+🌿 Git Workflow
+
+The project follows a monorepo structure:
+
+Expense Web Tracker/
+├── Frontend/
+└── backend/
+
+
+Both applications are managed within the same Git repository.
+
+For changes:
+
+git status
+git add .
+git commit -m "Describe your changes"
+git push origin master
+
+🎯 Project Goals
+
+The goal of this application is to provide a simple and effective way for users to understand and manage their personal finances.
+
+The system combines:
+
+A modern web interface
+A structured backend API
+Persistent financial data
+Authentication
+Reports and financial summaries
+📄 License
+
+This project is developed for educational and project purposes.
