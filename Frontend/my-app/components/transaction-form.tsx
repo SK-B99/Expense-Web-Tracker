@@ -68,7 +68,7 @@ export default function TransactionForm({
       aria-modal="true"
       aria-labelledby="transaction-form-title"
     >
-      {/* Backdrop */}
+     
       <button
         type="button"
         aria-label="Close transaction form"
@@ -81,7 +81,7 @@ export default function TransactionForm({
         onSubmit={handleSubmit}
         className="relative flex max-h-[90dvh] w-full flex-col overflow-hidden rounded-t-2xl bg-white shadow-2xl sm:max-w-md sm:rounded-2xl"
       >
-        {/* Header */}
+    
         <div className="flex items-start justify-between gap-4 border-b border-gray-100 px-5 py-4 sm:px-6">
           <div className="min-w-0">
             <h2
@@ -106,10 +106,10 @@ export default function TransactionForm({
           </button>
         </div>
 
-        {/* Form content */}
+       
         <div className="overflow-y-auto px-5 py-5 sm:px-6">
           <div className="space-y-5">
-            {/* Transaction type */}
+            
             <fieldset>
               <legend className="mb-2 text-sm font-medium text-gray-700">
                 Type
@@ -145,7 +145,7 @@ export default function TransactionForm({
               </div>
             </fieldset>
 
-            {/* Amount */}
+         
             <div>
               <label
                 htmlFor="amount"
@@ -173,7 +173,7 @@ export default function TransactionForm({
               </div>
             </div>
 
-            {/* Description */}
+          
             <div>
               <label
                 htmlFor="description"
@@ -192,7 +192,7 @@ export default function TransactionForm({
               />
             </div>
 
-            {/* Category */}
+           
             <div>
               <label
                 htmlFor="category"
@@ -219,7 +219,7 @@ export default function TransactionForm({
               </select>
             </div>
 
-            {/* Date */}
+            
             <div>
               <label
                 htmlFor="date"
@@ -246,7 +246,7 @@ export default function TransactionForm({
           </div>
         </div>
 
-        {/* Actions */}
+       
         <div className="border-t border-gray-100 bg-white px-5 py-4 sm:px-6">
           <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
             <button

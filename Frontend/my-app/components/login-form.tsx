@@ -2,10 +2,9 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { cn } from "cn"
+import { cn } from "@/lib/utils"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import {
   Field,
   FieldDescription,
@@ -21,6 +20,7 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const { login } = useAuth()
   const router = useRouter()
+
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -34,7 +34,9 @@ export function LoginForm({
 
     try {
       setLoading(true)
+
       await login(email, password)
+
       router.push("/dashboard")
     } catch (err) {
       setError("Invalid email or password")
@@ -44,72 +46,79 @@ export function LoginForm({
   }
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden p-0">
-        <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8" onSubmit={handleSubmit}>
-            <FieldGroup className="gap-6">
-              <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Welcome back</h1>
-                <p className="text-balance text-muted-foreground">
-                  Login to your SpendWise account
-                </p>
-              </div>
+    <div
+      className={cn("w-full", className)}
+      {...props}
+    >
+      <form onSubmit={handleSubmit}>
+        <FieldGroup className="gap-5">
+      
+          <Field className="gap-2">
+            <FieldLabel
+              htmlFor="email"
+              className="text-sm font-medium text-[#183047]"
+            >
+              Email address
+            </FieldLabel>
 
-              <Field className="gap-2">
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </Field>
-
-              <Field className="gap-2">
-                <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="••••••••"
-                  required
-                />
-              </Field>
-
-              {error && (
-                <p className="text-sm text-destructive text-center">
-                  {error}
-                </p>
-              )}
-
-              <Field>
-                <Button type="submit" disabled={loading}>
-                  {loading ? "Logging in..." : "Login"}
-                </Button>
-              </Field>
-
-              <FieldDescription className="text-center">
-                Don&apos;t have an account? <a href="/signup">Sign up</a>
-              </FieldDescription>
-            </FieldGroup>
-          </form>
-
-          <div className="relative hidden bg-muted md:block">
-            <img
-              src="/favicon.webp"
-              alt="Image"
-              className="absolute inset-0 h-full w-full object-fill dark:brightness-[0.2] dark:white"
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="you@example.com"
+              autoComplete="email"
+              required
+              className="h-12 rounded-lg border-[#d8d8d4] bg-white px-4 text-[15px] shadow-none placeholder:text-[#9aa5b1] focus-visible:border-[#183047] focus-visible:ring-1 focus-visible:ring-[#183047]"
             />
-          </div>
-        </CardContent>
-      </Card>
+          </Field>
 
-      <FieldDescription className="px-6 text-center">
-        By clicking continue, you agree to our <a href="/terms">Terms of Service</a>{" "}
-        and <a href="/privacy">Privacy Policy</a>.
-      </FieldDescription>
+        
+          <Field className="gap-2">
+            <div className="flex items-center justify-between">
+              <FieldLabel
+                htmlFor="password"
+                className="text-sm font-medium text-[#183047]"
+              >
+                Password
+              </FieldLabel>
+
+              <a
+                href="/forgot-password"
+                className="text-sm text-[#52657a] transition-colors hover:text-[#111]"
+              >
+                Forgot password?
+              </a>
+            </div>
+
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="••••••••"
+              autoComplete="current-password"
+              required
+              className="h-12 rounded-lg border-[#d8d8d4] bg-white px-4 text-[15px] shadow-none placeholder:text-[#9aa5b1] focus-visible:border-[#183047] focus-visible:ring-1 focus-visible:ring-[#183047]"
+            />
+          </Field>
+
+      
+          {error && (
+            <p className="text-center text-sm text-red-600">
+              {error}
+            </p>
+          )}
+
+          <Field className="pt-1">
+            <Button
+              type="submit"
+              disabled={loading}
+              className="h-12 w-full rounded-lg bg-[#111] text-[15px] font-medium text-white shadow-none transition-opacity hover:bg-[#111] hover:opacity-90"
+            >
+              {loading ? "Signing in..." : "Sign in"}
+            </Button>
+          </Field>
+        </FieldGroup>
+      </form>
     </div>
   )
 }

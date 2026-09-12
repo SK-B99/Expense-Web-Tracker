@@ -6,10 +6,11 @@ const sections = [
     content: (
       <>
         <p>
-          [App Name] is a personal financial tracking application designed to
+          SpendWise is a personal financial tracking application designed to
           help you record and organize income, expenses, transactions, and
           financial summaries.
         </p>
+
         <p>
           Features may include income and expense tracking, transaction
           categorization, financial summaries, reports, spending analysis, and
@@ -18,19 +19,22 @@ const sections = [
       </>
     ),
   },
+
   {
     title: "2. Not Financial Advice",
     content: (
       <>
         <p>
-          [App Name] is a financial tracking and organization tool.
+          SpendWise is a financial tracking and organization tool.
         </p>
+
         <p>
           Information, calculations, charts, summaries, and insights provided
           by the application are for informational and organizational purposes
           only. They are not financial, investment, tax, accounting, or legal
           advice.
         </p>
+
         <p>
           You are responsible for your own financial decisions and should
           consult a qualified professional when appropriate.
@@ -38,17 +42,20 @@ const sections = [
       </>
     ),
   },
+
   {
     title: "3. Your Account",
     content: (
       <>
         <p>You are responsible for:</p>
+
         <ul>
           <li>Providing accurate account information.</li>
           <li>Keeping your login credentials secure.</li>
           <li>Maintaining the security of your account.</li>
           <li>Activity that occurs through your account.</li>
         </ul>
+
         <p>
           If you believe someone has accessed your account without permission,
           please contact us as soon as possible.
@@ -56,22 +63,25 @@ const sections = [
       </>
     ),
   },
+
   {
     title: "4. Your Data",
     content: (
       <p>
         You retain ownership of the financial information and other content
-        you enter into [App Name]. You grant us permission to store and process
+        you enter into SpendWise. You grant us permission to store and process
         that information only as necessary to provide, maintain, secure, and
         improve the service, as described in our Privacy Policy.
       </p>
     ),
   },
+
   {
     title: "5. Acceptable Use",
     content: (
       <>
         <p>You agree not to:</p>
+
         <ul>
           <li>Use the service for unlawful purposes.</li>
           <li>Attempt to access another user's account.</li>
@@ -83,6 +93,7 @@ const sections = [
       </>
     ),
   },
+
   {
     title: "6. Accuracy of Information",
     content: (
@@ -95,6 +106,7 @@ const sections = [
       </p>
     ),
   },
+
   {
     title: "7. Availability",
     content: (
@@ -106,6 +118,7 @@ const sections = [
       </p>
     ),
   },
+
   {
     title: "8. Third-Party Services",
     content: (
@@ -117,11 +130,12 @@ const sections = [
       </p>
     ),
   },
+
   {
     title: "9. Intellectual Property",
     content: (
       <p>
-        The [App Name] application, including its design, branding, software,
+        The SpendWise application, including its design, branding, software,
         text, graphics, and original content, is owned by or licensed to us
         and protected by applicable intellectual property laws. These Terms do
         not transfer ownership of the application or its underlying technology
@@ -129,22 +143,24 @@ const sections = [
       </p>
     ),
   },
+
   {
     title: "10. Account Termination",
     content: (
       <p>
-        You may stop using [App Name] at any time. We may suspend or terminate
+        You may stop using SpendWise at any time. We may suspend or terminate
         an account if we reasonably believe that you have violated these
         Terms, abused the service, created a security risk, or used the service
         unlawfully.
       </p>
     ),
   },
+
   {
     title: "11. Disclaimer",
     content: (
       <p>
-        To the maximum extent permitted by applicable law, [App Name] is
+        To the maximum extent permitted by applicable law, SpendWise is
         provided on an "as is" and "as available" basis. We do not guarantee
         that the service will always be available, secure, accurate, or free
         from errors. Nothing in these Terms excludes or limits rights or
@@ -152,11 +168,12 @@ const sections = [
       </p>
     ),
   },
+
   {
     title: "12. Limitation of Liability",
     content: (
       <p>
-        To the maximum extent permitted by applicable law, [App Name] and its
+        To the maximum extent permitted by applicable law, SpendWise and its
         operators will not be responsible for indirect, incidental, special,
         consequential, or similar losses arising from your use of the service,
         including losses resulting from reliance on financial summaries,
@@ -164,27 +181,29 @@ const sections = [
       </p>
     ),
   },
+
   {
     title: "13. Changes to These Terms",
     content: (
       <p>
         We may update these Terms from time to time. If we make material
         changes, we will take reasonable steps to notify users where
-        appropriate. Your continued use of [App Name] after changes become
+        appropriate. Your continued use of SpendWise after changes become
         effective means that you accept the updated Terms.
       </p>
     ),
   },
+
   {
     title: "14. Contact",
     content: (
       <p>
         If you have questions about these Terms, contact us at{" "}
         <a
-          href="mailto:[Support Email]"
-          className="font-medium text-foreground underline underline-offset-4"
+          href="mailto:samuelbaffoekwarteng@gmail.com"
+          className="font-medium text-[#111] underline underline-offset-4 transition-opacity hover:opacity-60"
         >
-          [Support Email]
+          samuelbaffoekwarteng@gmail.com
         </a>
         .
       </p>
@@ -194,70 +213,75 @@ const sections = [
 
 export default function TermsPage() {
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-[#fafaf8] text-[#183047]">
       <div className="mx-auto max-w-4xl px-6 py-12 md:px-8 md:py-20">
-        {/* Header */}
+
+      
         <div className="mb-12">
+
           <Link
             href="/"
-            className="mb-8 inline-flex items-center text-sm text-muted-foreground transition-colors hover:text-foreground"
+            className="mb-10 inline-flex items-center text-sm text-[#52657a] transition-colors hover:text-[#111]"
           >
-            ← Back to dashboard
+            ← Back to Home
           </Link>
 
-          <div className="mb-4 inline-flex rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
+          <div className="mb-5 inline-flex rounded-full border border-[#dededb] bg-white px-3 py-1 text-xs font-medium text-[#52657a]">
             Legal
           </div>
 
-          <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">
+          <h1 className="font-serif text-[44px] font-semibold leading-[1.05] tracking-[-0.035em] text-[#111] md:text-[56px]">
             Terms of Service
           </h1>
 
-          <p className="mt-4 text-sm text-muted-foreground">
+          <p className="mt-5 text-sm text-[#68788a]">
             Last updated: September 7, 2026
           </p>
 
-          <p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground">
-            These terms explain the rules for using [App Name], a simple tool
+          <p className="mt-7 max-w-2xl text-[15px] leading-7 text-[#52657a]">
+            These terms explain the rules for using SpendWise, a simple tool
             for tracking income, expenses, and personal financial summaries.
           </p>
         </div>
 
-        {/* Content */}
-        <div className="divide-y divide-border border-y border-border">
+        <div className="divide-y divide-[#dededb] border-y border-[#dededb]">
           {sections.map((section) => (
-            <section key={section.title} className="py-8">
-              <h2 className="text-lg font-semibold tracking-tight">
+            <section
+              key={section.title}
+              className="py-8 md:py-9"
+            >
+              <h2 className="text-lg font-semibold tracking-[-0.01em] text-[#111]">
                 {section.title}
               </h2>
 
-              <div className="mt-4 space-y-4 text-sm leading-7 text-muted-foreground">
+              <div className="mt-4 space-y-4 text-sm leading-7 text-[#52657a]">
                 {section.content}
               </div>
             </section>
           ))}
         </div>
 
-        {/* Footer */}
-        <div className="mt-10 flex flex-col gap-4 border-t border-border pt-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 [App Name]. All rights reserved.</p>
+      
+        <div className="mt-10 flex flex-col gap-4 border-t border-[#dededb] pt-8 text-sm text-[#68788a] sm:flex-row sm:items-center sm:justify-between">
+          <p>© 2026 SpendWise. All rights reserved.</p>
 
-          <div className="flex gap-4">
+          <div className="flex gap-5">
             <Link
               href="/privacy"
-              className="transition-colors hover:text-foreground"
+              className="transition-colors hover:text-[#111]"
             >
               Privacy Policy
             </Link>
 
             <Link
               href="/"
-              className="transition-colors hover:text-foreground"
+              className="transition-colors hover:text-[#111]"
             >
               Home
             </Link>
           </div>
         </div>
+
       </div>
     </main>
   )

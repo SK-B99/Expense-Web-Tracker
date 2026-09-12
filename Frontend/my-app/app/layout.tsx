@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono } from "next/font/google";
+import { Geist, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { AuthProvider } from "@/lib/auth-context";
@@ -14,9 +14,16 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Spendify",
-  description: "Track your personal finances with Spendify.",
+  title: "SpendWise",
+  description: "Track your personal finances with SpendWise.",
 };
 
 export default function RootLayout({
@@ -31,10 +38,19 @@ export default function RootLayout({
         "h-full",
         "antialiased",
         geistSans.variable,
-        jetbrainsMono.variable
+        jetbrainsMono.variable,
+        fraunces.variable
       )}
     >
-      <body className="min-h-full bg-gray-50 font-sans">
+      <body
+        className={cn(
+          "min-h-full",
+          "overflow-x-hidden",
+          "bg-[#fafaf8]",
+          "font-sans",
+          "text-[#0A0A0A]"
+        )}
+      >
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
