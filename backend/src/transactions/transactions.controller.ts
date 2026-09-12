@@ -1,32 +1,40 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
-  Req,
   UseGuards,
 } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
-import { Request } from 'express';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { CreateTransactionDto } from './commands/create-transaction/create-transaction.dto';
 import { CreateTransactionCommand } from './commands/create-transaction/create-transaction.command';
+import { GetTransactionsQuery } from './queries/get-transactions/get-transactions.query';
+
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser, RequestUser } from '../auth/decorators/current-user.decorator';
 
 @Controller('transactions')
 @UseGuards(JwtAuthGuard)
 export class TransactionsController {
   constructor(
     private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
   ) {}
+
+  @Get()
+  async findAll(@CurrentUser() user: RequestUser) {
+    return this.queryBus.execute(new GetTransactionsQuery(user.id));
+  }
 
   @Post()
   async create(
-    @Req() req: Request & { user: { id: number } },
+    @CurrentUser() user: RequestUser,
     @Body() dto: CreateTransactionDto,
   ) {
     return this.commandBus.execute(
       new CreateTransactionCommand(
-        req.user.id,
+        user.id,
         dto.type,
         dto.amount,
         dto.category,

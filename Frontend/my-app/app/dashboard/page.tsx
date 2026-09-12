@@ -10,6 +10,7 @@ import Charts from "@/components/charts";
 import RecentTransactions from "@/components/recent";
 import { useAuth } from "@/hooks/use-auth";
 import Reports from "@/components/reports";
+import TransactionsList from "@/components/transactions-list";
 
 const monthOptions = [
   { label: "This month", value: "this-month" },
@@ -117,12 +118,8 @@ export default function DashboardPage() {
             </>
           )}
 
-          {activeView === "transactions" && (
-  <div className="mt-6 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-    <p className="text-sm text-gray-400">
-      Transactions view goes here.
-    </p>
-  </div>
+ {activeView === "transactions" && (
+  <TransactionsList refreshKey={refreshKey} />
 )}
 
 {activeView === "reports" && <Reports />}
