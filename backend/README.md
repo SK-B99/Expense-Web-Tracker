@@ -1,253 +1,242 @@
-Expense Web Tracker
+# SpendWise Backend
 
-A full-stack web application for managing personal finances by tracking income, expenses, and financial summaries.
+The backend API for **SpendWise**, a personal finance application for managing income, expenses, transactions, and financial reports.
 
-This project was developed as part of Task 3 (Medium) – Expense Tracker Web Application.
+## Tech Stack
 
-📌 Task Description
+* NestJS
+* TypeScript
+* PostgreSQL
+* Prisma ORM
+* CQRS
+* JWT
+* Passport
+* bcrypt
+* Docker
 
-Develop a web application to track income, expenses, and financial summaries.
+## Features
 
-The application provides a dashboard for users to manage their financial records, view reports, and monitor their overall financial activity.
+* User registration
+* User login
+* JWT authentication
+* Access and refresh tokens
+* Refresh-token rotation
+* Logout
+* Protected API endpoints
+* Transaction management
+* Financial dashboard
+* Spending reports
+* Category breakdowns
+* Monthly summaries
+* Request validation
+* PostgreSQL database
 
-✨ Features
-📊 Financial dashboard
-💰 Income tracking
-💸 Expense tracking
-📈 Financial summaries and reports
-🔐 User authentication
-🗄️ Database-backed financial records
-🔌 RESTful backend APIs
-📱 Responsive frontend interface
-🏗️ Project Structure
+## Project Structure
 
-This project uses a monorepo architecture, with the frontend and backend maintained in a single Git repository.
-
-Expense Web Tracker/
+```text
+src/
+├── auth/
+│   ├── commands/
+│   │   ├── login/
+│   │   ├── logout/
+│   │   ├── refresh/
+│   │   └── register/
+│   ├── decorators/
+│   ├── guards/
+│   ├── strategies/
+│   ├── auth.controller.ts
+│   └── auth.module.ts
 │
-├── Frontend/
-│   └── my-app/
-│       ├── app/
-│       ├── components/
-│       ├── hooks/
-│       ├── lib/
-│       ├── public/
-│       ├── package.json
-│       └── ...
+├── dashboard/
+│   ├── queries/
+│   ├── dashboard.controller.ts
+│   └── dashboard.module.ts
 │
-├── backend/
-│   ├── src/
-│   ├── test/
-│   ├── package.json
-│   └── ...
+├── reports/
+│   └── queries/
 │
-└── README.md
+├── transactions/
+│   ├── commands/
+│   ├── queries/
+│   ├── transactions.controller.ts
+│   └── transactions.module.ts
+│
+├── prisma/
+│   ├── prisma.module.ts
+│   └── prisma.service.ts
+│
+├── common/
+├── app.module.ts
+└── main.ts
+```
 
-Frontend
+## CQRS
 
-The frontend is located in:
+The backend uses CQRS to separate commands from queries.
 
-Frontend/my-app/
+### Commands
 
+Commands handle operations that change data:
 
-It is responsible for the user interface, dashboard, financial records, reports, and interaction with the backend API.
+```text
+CreateTransaction
+UpdateTransaction
+DeleteTransaction
+Register
+Login
+Refresh
+Logout
+```
 
-Backend
+### Queries
 
-The backend is located in:
+Queries handle data retrieval:
 
-backend/
+```text
+GetTransaction
+GetTransactions
+GetDashboard
+GetSpendingOverTime
+GetCategoryBreakdown
+GetMonthlySummary
+```
 
+## Database
 
-It provides the APIs and server-side functionality required to manage financial records, authentication, and database operations.
+SpendWise uses PostgreSQL with Prisma.
 
-🛠️ Technology Stack
-Frontend
-Next.js
-React
-TypeScript
-Tailwind CSS
-ESLint
-Backend
-NestJS
-TypeScript
-REST API
-Vitest
-ESLint/Oxlint
-Database
+Main models:
 
-The backend is designed to persist financial records in a database.
+```text
+User
+Transaction
+RefreshToken
+```
 
-Database configuration may be added or updated as backend development progresses.
+Run Prisma migrations:
 
-🔄 Task Workflow
-Step 1: Design Dashboard Screens
+```bash
+npx prisma migrate dev
+```
 
-Create the application's main dashboard and supporting screens for:
+Generate the Prisma client:
 
-Total income
-Total expenses
-Current balance
-Recent transactions
-Financial summaries
-Reports
-Step 2: Create Expense Management APIs
+```bash
+npx prisma generate
+```
 
-Develop backend APIs for managing financial records, including:
+Open Prisma Studio:
 
-Creating income records
-Creating expense records
-Retrieving transactions
-Updating transactions
-Deleting transactions
-Filtering financial records
-Step 3: Store Financial Records in a Database
+```bash
+npx prisma studio
+```
 
-Persist application data in a database, including:
+## Environment Variables
 
-User information
-Income records
-Expense records
-Transaction details
-Relevant financial metadata
-Step 4: Display Reports and Summaries
+Create a `.env` file:
 
-Provide users with useful financial insights such as:
+```env
+NODE_ENV=development
+PORT=4000
 
-Total income
-Total expenses
-Balance
-Spending summaries
-Income vs. expense comparisons
-Transaction history
-Step 5: Implement Authentication
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/0123"
 
-Implement secure user authentication so that users can:
+FRONTEND_URL="http://localhost:3000"
 
-Register an account
-Log in
-Access protected resources
-Manage their own financial records
-Log out securely
-🚀 Getting Started
-Prerequisites
+JWT_ACCESS_SECRET="your-access-secret"
+JWT_REFRESH_SECRET="your-refresh-secret"
 
-Make sure you have installed:
+JWT_ACCESS_EXPIRES_IN="15m"
+JWT_REFRESH_EXPIRES_IN="7d"
+```
 
-Node.js
-npm
-Git
-Clone the Repository
-git clone https://github.com/SK-B99/Expense-Web-Tracker.git
-cd Expense-Web-Tracker
-
-💻 Running the Frontend
-
-Navigate to the frontend application:
-
-cd Frontend/my-app
-
+## Getting Started
 
 Install dependencies:
 
+```bash
 npm install
+```
 
+Generate Prisma client:
+
+```bash
+npx prisma generate
+```
+
+Run migrations:
+
+```bash
+npx prisma migrate dev
+```
 
 Start the development server:
 
-npm run dev
-
-
-The frontend will normally be available at:
-
-http://localhost:3000
-
-⚙️ Running the Backend
-
-From the project root:
-
-cd backend
-
-
-Install dependencies:
-
-npm install
-
-
-Start the development server:
-
+```bash
 npm run start:dev
+```
 
+The API runs on:
 
-The backend API will normally run on:
+```text
+http://localhost:4000
+```
 
-http://localhost:3000
+## Build
 
+Create a production build:
 
-If the frontend and backend use the same port, configure one of them to use a different port.
+```bash
+npm run build
+```
 
-🔐 Environment Variables
+Start the production server:
 
-Environment-specific configuration should be stored in .env files and should not be committed to Git.
+```bash
+npm run start
+```
 
-Example:
+## Docker
 
-DATABASE_URL=your_database_connection_string
-JWT_SECRET=your_secret_key
-PORT=3001
+Build and start the project:
 
+```bash
+docker compose up -d --build
+```
 
-Create an appropriate .env file inside the backend and configure the frontend environment variables as required.
+Stop the containers:
 
-🧪 Testing
-Backend Unit Tests
-cd backend
-npm run test
+```bash
+docker compose down
+```
 
-Backend End-to-End Tests
+## API Areas
+
+```text
+/auth
+/transactions
+/dashboard
+/reports
+```
+
+Protected endpoints require a valid JWT access token.
+
+## Testing
+
+Run tests:
+
+```bash
+npm test
+```
+
+Run end-to-end tests:
+
+```bash
 npm run test:e2e
+```
 
-Test Coverage
-npm run test:cov
+## Author
 
-📦 Production Build
-Frontend
-cd Frontend/my-app
-npm run build
+**Samuel Kwarteng Baffoe**
 
-Backend
-cd backend
-npm run build
-
-🌿 Git Workflow
-
-The project follows a monorepo structure:
-
-Expense Web Tracker/
-├── Frontend/
-└── backend/
-
-
-Both applications are managed within the same Git repository.
-
-For changes:
-
-git status
-git add .
-git commit -m "Describe your changes"
-git push origin master
-
-🎯 Project Goals
-
-The goal of this application is to provide a simple and effective way for users to understand and manage their personal finances.
-
-The system combines:
-
-A modern web interface
-A structured backend API
-Persistent financial data
-Authentication
-Reports and financial summaries
-📄 License
-
-This project is developed for educational and project purposes.
+GitHub: https://github.com/SK-B99
