@@ -11,8 +11,13 @@ export class GetTransactionsHandler
   constructor(private readonly prisma: PrismaService) {}
 
   async execute(query: GetTransactionsQuery) {
+    const { userId, startDate, endDate } = query;
+
     const transactions = await this.prisma.transaction.findMany({
-      where: { userId: query.userId },
+      where: {
+        userId,
+        date: { gte: startDate, lte: endDate },
+      },
       orderBy: { date: 'desc' },
     });
 

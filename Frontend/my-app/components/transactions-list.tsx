@@ -1,8 +1,13 @@
-// components/transactions-list.tsx
+
 "use client";
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api-client";
+
+type DateRange = {
+  startDate: string;
+  endDate: string;
+};
 
 type Transaction = {
   id: number;
@@ -14,10 +19,11 @@ type Transaction = {
 };
 
 type TransactionsListProps = {
+  dateRange: DateRange;
   refreshKey: number;
 };
 
-export default function TransactionsList({ refreshKey }: TransactionsListProps) {
+export default function TransactionsList({ dateRange, refreshKey }: TransactionsListProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -30,7 +36,9 @@ export default function TransactionsList({ refreshKey }: TransactionsListProps) 
       setError(null);
 
       try {
-        const result = await api.get<Transaction[]>("/transactions");
+        const result = await api.get<Transaction[]>(
+          `/transactions?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`,
+        );
         if (!cancelled) setTransactions(result);
       } catch (err) {
         if (!cancelled) {
@@ -48,7 +56,7 @@ export default function TransactionsList({ refreshKey }: TransactionsListProps) 
     return () => {
       cancelled = true;
     };
-  }, [refreshKey]);
+  }, [dateRange, refreshKey]);
 
   if (loading) {
     return (
@@ -69,7 +77,7 @@ export default function TransactionsList({ refreshKey }: TransactionsListProps) 
   if (transactions.length === 0) {
     return (
       <div className="mt-6 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-        <p className="text-sm text-gray-400">No transactions yet.</p>
+        <p className="text-sm text-gray-400">No transactions in this period.</p>
       </div>
     );
   }

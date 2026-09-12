@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
@@ -23,8 +24,18 @@ export class TransactionsController {
   ) {}
 
   @Get()
-  async findAll(@CurrentUser() user: RequestUser) {
-    return this.queryBus.execute(new GetTransactionsQuery(user.id));
+  async findAll(
+    @CurrentUser() user: RequestUser,
+    @Query('startDate') startDate: string,
+    @Query('endDate') endDate: string,
+  ) {
+    return this.queryBus.execute(
+      new GetTransactionsQuery(
+        user.id,
+        new Date(startDate),
+        new Date(endDate),
+      ),
+    );
   }
 
   @Post()

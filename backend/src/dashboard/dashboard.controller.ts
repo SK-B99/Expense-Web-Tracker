@@ -1,37 +1,48 @@
-import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
+import {
+  Controller,
+  Get,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { GetDashboardQuery } from './queries/get-dashboard/get-dashboard.query';
-import { GetSpendingOverTimeQuery } from './queries/get-dashboard/get-spending-over-time.query'; 
+import { GetSpendingOverTimeQuery } from './queries/get-dashboard/get-spending-over-time.query';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser, RequestUser } from '../auth/decorators/current-user.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Controller('dashboard')
 export class DashboardController {
-  constructor(
-    private readonly queryBus: QueryBus,
-  ) {}
+  constructor(private readonly queryBus: QueryBus) {}
 
   @Get()
   async getDashboard(
-    @Req() req: Request & { user: { id: number } },
+    @CurrentUser() user: RequestUser,
+    @Query('startDate') startDate: string,
+    @Query('endDate') endDate: string,
   ) {
     return this.queryBus.execute(
-      new GetDashboardQuery(req.user.id),
+      new GetDashboardQuery(
+        user.id,
+        new Date(startDate),
+        new Date(endDate),
+      ),
     );
   }
 
   @Get('spending-over-time')
   async getSpendingOverTime(
-    @Req() req: Request & { user: { id: number } },
-    @Query('days') days?: string,
+    @CurrentUser() user: RequestUser,
+    @Query('startDate') startDate: string,
+    @Query('endDate') endDate: string,
   ) {
     return this.queryBus.execute(
       new GetSpendingOverTimeQuery(
-        req.user.id,
-        days ? parseInt(days, 10) : 30,
+        user.id,
+        new Date(startDate),
+        new Date(endDate),
       ),
     );
   }

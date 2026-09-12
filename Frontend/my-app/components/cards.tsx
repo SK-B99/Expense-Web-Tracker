@@ -3,8 +3,13 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api-client";
 
+type DateRange = {
+  startDate: string;
+  endDate: string;
+};
+
 type DashboardCardsProps = {
-  month?: string;
+  dateRange: DateRange;
   refreshKey?: number;
 };
 
@@ -21,7 +26,7 @@ function formatCurrency(value: number) {
   }).format(value);
 }
 
-export default function DashboardCards({ month, refreshKey }: DashboardCardsProps) {
+export default function DashboardCards({ dateRange, refreshKey }: DashboardCardsProps) {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -31,7 +36,9 @@ export default function DashboardCards({ month, refreshKey }: DashboardCardsProp
     async function fetchDashboard() {
       setLoading(true);
       try {
-        const result = await api.get("/dashboard");
+        const result = await api.get<DashboardData>(
+          `/dashboard?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`,
+        );
         if (!cancelled) {
           setData(result);
         }
@@ -47,7 +54,7 @@ export default function DashboardCards({ month, refreshKey }: DashboardCardsProp
     return () => {
       cancelled = true;
     };
-  }, [month, refreshKey]);
+  }, [dateRange, refreshKey]);
 
   return (
     <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">

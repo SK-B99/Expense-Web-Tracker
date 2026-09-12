@@ -5,7 +5,7 @@ import { GetSpendingOverTimeQuery } from './get-spending-over-time.query.js';
 
 interface DailyRow {
   day: Date;
-  income: string; 
+  income: string;
   expenses: string;
 }
 
@@ -16,11 +16,7 @@ export class GetSpendingOverTimeHandler
   constructor(private readonly prisma: PrismaService) {}
 
   async execute(query: GetSpendingOverTimeQuery) {
-    const { userId, days } = query;
-
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - days);
-    startDate.setHours(0, 0, 0, 0);
+    const { userId, startDate, endDate } = query;
 
     const rows = await this.prisma.$queryRaw<DailyRow[]>`
       SELECT
@@ -30,12 +26,13 @@ export class GetSpendingOverTimeHandler
       FROM "transactions"
       WHERE "userId" = ${userId}
         AND "date" >= ${startDate}
+        AND "date" <= ${endDate}
       GROUP BY day
       ORDER BY day ASC
     `;
 
     return rows.map((row) => ({
-      date: row.day.toISOString().split('T')[0], 
+      date: row.day.toISOString().split('T')[0],
       income: Number(row.income),
       expenses: Number(row.expenses),
     }));

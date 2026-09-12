@@ -1,7 +1,8 @@
-
+// get-spending-over-time.query.ts
 export class GetSpendingOverTimeQuery {
   constructor(
     public readonly userId: number,
-    public readonly days: number = 30,
+    public readonly startDate: Date,
+    public readonly endDate: Date,
   ) {}
 }

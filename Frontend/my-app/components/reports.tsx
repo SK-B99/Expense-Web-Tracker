@@ -13,6 +13,15 @@ import {
 } from "recharts";
 import { api } from "@/lib/api-client";
 
+type DateRange = {
+  startDate: string;
+  endDate: string;
+};
+
+type ReportsProps = {
+  dateRange: DateRange;
+};
+
 type CategoryBreakdown = {
   category: string;
   amount: number;
@@ -37,7 +46,7 @@ const CATEGORY_COLORS = [
   "#f97316",
 ];
 
-export default function Reports() {
+export default function Reports({ dateRange }: ReportsProps) {
   const [breakdown, setBreakdown] = useState<CategoryBreakdown[]>([]);
   const [summary, setSummary] = useState<MonthlySummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +61,9 @@ export default function Reports() {
 
       try {
         const [breakdownRes, summaryRes] = await Promise.all([
-          api.get<CategoryBreakdown[]>("/reports/category-breakdown"),
+          api.get<CategoryBreakdown[]>(
+            `/reports/category-breakdown?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`,
+          ),
           api.get<MonthlySummary[]>("/reports/monthly-summary?months=6"),
         ]);
 
@@ -76,7 +87,7 @@ export default function Reports() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [dateRange]);
 
   if (loading) {
     return (
@@ -98,14 +109,14 @@ export default function Reports() {
 
   return (
     <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2">
-      {/* Category breakdown */}
+      
       <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
         <h3 className="font-semibold text-gray-900">Spending by category</h3>
-        <p className="mt-1 text-sm text-gray-500">This month, by category.</p>
+        <p className="mt-1 text-sm text-gray-500">For the selected period.</p>
 
         {breakdown.length === 0 ? (
           <div className="mt-6 flex min-h-40 items-center justify-center rounded-lg bg-gray-50 text-sm text-gray-400">
-            No expenses recorded this month.
+            No expenses recorded in this period.
           </div>
         ) : (
           <div className="mt-5 space-y-3">
@@ -138,7 +149,7 @@ export default function Reports() {
         )}
       </div>
 
-      {/* Monthly summary */}
+      
       <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
         <h3 className="font-semibold text-gray-900">Income vs. expenses</h3>
         <p className="mt-1 text-sm text-gray-500">Last 6 months.</p>

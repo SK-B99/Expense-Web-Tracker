@@ -12,8 +12,13 @@ import {
 } from "recharts";
 import { api } from "@/lib/api-client";
 
+type DateRange = {
+  startDate: string;
+  endDate: string;
+};
+
 type ChartsProps = {
-  month?: string;
+  dateRange: DateRange;
   refreshKey?: number;
 };
 
@@ -30,7 +35,7 @@ function formatDateLabel(value: string) {
   }).format(new Date(value));
 }
 
-export default function Charts({ month, refreshKey }: ChartsProps) {
+export default function Charts({ dateRange, refreshKey }: ChartsProps) {
   const [data, setData] = useState<DailyPoint[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -40,7 +45,9 @@ export default function Charts({ month, refreshKey }: ChartsProps) {
     async function fetchSpendingOverTime() {
       setLoading(true);
       try {
-        const result = await api.get("/dashboard/spending-over-time?days=30");
+        const result = await api.get<DailyPoint[]>(
+          `/dashboard/spending-over-time?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`,
+        );
         if (!cancelled) {
           setData(result);
         }
@@ -56,7 +63,7 @@ export default function Charts({ month, refreshKey }: ChartsProps) {
     return () => {
       cancelled = true;
     };
-  }, [month, refreshKey]);
+  }, [dateRange, refreshKey]);
 
   return (
     <div className="min-h-80 rounded-xl border border-gray-200 bg-white p-5 shadow-sm xl:col-span-2">

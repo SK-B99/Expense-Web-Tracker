@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Calendar, ChevronDown } from "lucide-react";
 import Sidebar from "@/components/sidebar";
@@ -11,6 +11,7 @@ import RecentTransactions from "@/components/recent";
 import { useAuth } from "@/hooks/use-auth";
 import Reports from "@/components/reports";
 import TransactionsList from "@/components/transactions-list";
+import { getMonthRange } from "@/lib/date-range";
 
 const monthOptions = [
   { label: "This month", value: "this-month" },
@@ -26,6 +27,11 @@ export default function DashboardPage() {
   const [selectedMonth, setSelectedMonth] = useState(monthOptions[0].value);
   const [activeView, setActiveView] = useState("overview");
   const [refreshKey, setRefreshKey] = useState(0);
+
+  const dateRange = useMemo(
+    () => getMonthRange(selectedMonth),
+    [selectedMonth],
+  );
 
   const handleTransactionAdded = useCallback(() => {
     setRefreshKey((prev) => prev + 1);
@@ -109,20 +115,20 @@ export default function DashboardPage() {
 
           {activeView === "overview" && (
             <>
-              <DashboardCards month={selectedMonth} refreshKey={refreshKey} />
+              <DashboardCards dateRange={dateRange} refreshKey={refreshKey} />
 
               <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-3">
-                <Charts month={selectedMonth} refreshKey={refreshKey} />
-                <RecentTransactions month={selectedMonth} refreshKey={refreshKey} />
+                <Charts dateRange={dateRange} refreshKey={refreshKey} />
+                <RecentTransactions dateRange={dateRange} refreshKey={refreshKey} />
               </div>
             </>
           )}
 
- {activeView === "transactions" && (
-  <TransactionsList refreshKey={refreshKey} />
-)}
+          {activeView === "transactions" && (
+            <TransactionsList dateRange={dateRange} refreshKey={refreshKey} />
+          )}
 
-{activeView === "reports" && <Reports />}
+          {activeView === "reports" && <Reports dateRange={dateRange} />}
         </section>
       </main>
     </div>

@@ -2,9 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api-client";
+import { useRouter } from "next/navigation";
+
+type DateRange = {
+  startDate: string;
+  endDate: string;
+};
 
 type RecentTransactionsProps = {
-  month?: string;
+  dateRange: DateRange;
   refreshKey?: number;
 };
 
@@ -15,6 +21,10 @@ type Transaction = {
   category: string;
   description: string;
   date: string;
+};
+
+type DashboardData = {
+  recentTransactions: Transaction[];
 };
 
 function formatCurrency(value: number) {
@@ -31,7 +41,9 @@ function formatDate(value: string) {
   }).format(new Date(value));
 }
 
-export default function RecentTransactions({ month, refreshKey }: RecentTransactionsProps) {
+export default function RecentTransactions({ dateRange, refreshKey }: RecentTransactionsProps) {
+  const router = useRouter();
+
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,12 +53,14 @@ export default function RecentTransactions({ month, refreshKey }: RecentTransact
     async function fetchDashboard() {
       setLoading(true);
       try {
-        const result = await api.get("/dashboard");
+        const result = await api.get<DashboardData>(
+          `/dashboard?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`,
+        );
         if (!cancelled) {
           setTransactions(result.recentTransactions ?? []);
         }
       } catch (err) {
-        // keep previous data on failure
+        
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -57,7 +71,7 @@ export default function RecentTransactions({ month, refreshKey }: RecentTransact
     return () => {
       cancelled = true;
     };
-  }, [month, refreshKey]);
+  }, [dateRange, refreshKey]);
 
   return (
     <div className="min-h-80 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
@@ -66,9 +80,6 @@ export default function RecentTransactions({ month, refreshKey }: RecentTransact
           <h3 className="font-semibold text-gray-900">Recent transactions</h3>
           <p className="mt-1 text-sm text-gray-500">Your latest activity.</p>
         </div>
-        <button type="button" className="shrink-0 text-sm font-medium text-blue-600 hover:text-blue-700">
-          View all
-        </button>
       </div>
 
       <div className="mt-6">
