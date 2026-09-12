@@ -9,9 +9,10 @@ import { DeleteTransactionHandler } from './commands/delete-transaction/delete-t
 
 import { GetTransactionsHandler } from './queries/get-transactions/get-transactions.handler';
 import { GetTransactionHandler } from './queries/get-transaction/get-transaction.handler';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule,AuthModule],
   controllers: [TransactionsController],
   providers: [
     CreateTransactionHandler,

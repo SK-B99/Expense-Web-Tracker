@@ -3,14 +3,17 @@ import {
   Controller,
   Post,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Request } from 'express';
 
 import { CreateTransactionDto } from './commands/create-transaction/create-transaction.dto';
 import { CreateTransactionCommand } from './commands/create-transaction/create-transaction.command';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('transactions')
+@UseGuards(JwtAuthGuard)
 export class TransactionsController {
   constructor(
     private readonly commandBus: CommandBus,

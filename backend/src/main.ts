@@ -9,6 +9,7 @@ import {
 } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const port = process.env.PORT ?? 4000;
@@ -17,6 +18,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     instrument: ObserveInstrument,
   });
+  app.use(cookieParser());
 
   app.use(helmet());
 

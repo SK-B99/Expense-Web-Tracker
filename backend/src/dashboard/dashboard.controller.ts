@@ -1,9 +1,12 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { GetDashboardQuery } from './queries/get-dashboard/get-dashboard.query';
 
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+
+UseGuards(JwtAuthGuard)
 @Controller('dashboard')
 export class DashboardController {
   constructor(

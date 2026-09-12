@@ -12,15 +12,14 @@ enum TransactionType {
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
-  name         String
-  email        String        @unique
-  passwordHash String
-
-  transactions Transaction[]
-
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id            Int            @id @default(autoincrement())
+  name          String
+  email         String         @unique
+  passwordHash  String
+  transactions  Transaction[]
+  refreshTokens RefreshToken[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
   @@map("users")
 }
@@ -28,7 +27,6 @@ model User {
 model Transaction {
   id          Int             @id @default(autoincrement())
   userId      Int
-
   type        TransactionType
   amount      Decimal         @db.Decimal(12, 2)
   category    String?
@@ -43,5 +41,19 @@ model Transaction {
   @@index([userId])
   @@index([userId, type])
   @@index([userId, date])
+
   @@map("transactions")
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  tokenHash String   @unique
+  userId    Int
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
 }
