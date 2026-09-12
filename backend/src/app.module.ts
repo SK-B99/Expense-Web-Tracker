@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module.js';
 import { DashboardModule } from './dashboard/dashboard.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { TransactionsModule } from './transactions/transactions.module.js';
+import { ReportsModule } from './reports/queries/reports.module.js';
 
 export const {
   ObserveModule,
@@ -28,6 +29,7 @@ export const {
     AuthModule,
     TransactionsModule,
     DashboardModule,
+    ReportsModule,
   ],
 })
 export class AppModule {}
