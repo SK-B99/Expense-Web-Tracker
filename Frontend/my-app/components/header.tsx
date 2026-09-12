@@ -3,13 +3,23 @@
 import { useState } from "react";
 import { Menu, Plus } from "lucide-react";
 import TransactionForm from "./transaction-form";
+import { useAuth } from "@/hooks/use-auth";
 
 type HeaderProps = {
   onMenuClick?: () => void;
+  onTransactionAdded?: () => void;
 };
 
-export default function Header({ onMenuClick }: HeaderProps) {
+function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  return "Good evening";
+}
+
+export default function Header({ onMenuClick, onTransactionAdded }: HeaderProps) {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const { user } = useAuth();
 
   const formattedDate = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
@@ -17,6 +27,8 @@ export default function Header({ onMenuClick }: HeaderProps) {
     day: "numeric",
     year: "numeric",
   }).format(new Date());
+
+  const firstName = user?.name?.split(" ")[0] ?? "there";
 
   return (
     <>
@@ -41,7 +53,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
               </p>
 
               <h1 className="mt-1 truncate text-lg font-bold tracking-tight text-gray-900 sm:text-2xl">
-                Good morning, Admin
+                {getGreeting()}, {firstName}
               </h1>
             </div>
           </div>
@@ -73,6 +85,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
       {isFormOpen && (
         <TransactionForm
           onClose={() => setIsFormOpen(false)}
+          onSuccess={onTransactionAdded}
         />
       )}
     </>

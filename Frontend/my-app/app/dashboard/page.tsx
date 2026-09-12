@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Calendar, ChevronDown } from "lucide-react";
 import Sidebar from "@/components/sidebar";
 import Header from "@/components/header";
 import DashboardCards from "@/components/cards";
 import Charts from "@/components/charts";
 import RecentTransactions from "@/components/recent";
+import { useAuth } from "@/hooks/use-auth";
 
 const monthOptions = [
   { label: "This month", value: "this-month" },
@@ -14,10 +16,28 @@ const monthOptions = [
 ];
 
 export default function DashboardPage() {
+  const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(monthOptions[0].value);
   const [activeView, setActiveView] = useState("overview");
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleTransactionAdded = useCallback(() => {
+    setRefreshKey((prev) => prev + 1);
+  }, []);
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push("/login");
+    }
+  }, [authLoading, user, router]);
+
+  if (authLoading || !user) {
+    return null;
+  }
 
   return (
     <div className="min-h-dvh bg-gray-50">
@@ -36,7 +56,10 @@ export default function DashboardPage() {
           collapsed ? "lg:pl-20" : "lg:pl-72",
         ].join(" ")}
       >
-        <Header onMenuClick={() => setMobileOpen(true)} />
+        <Header
+          onMenuClick={() => setMobileOpen(true)}
+          onTransactionAdded={handleTransactionAdded}
+        />
 
         <section className="px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -84,11 +107,11 @@ export default function DashboardPage() {
 
           {activeView === "overview" && (
             <>
-              <DashboardCards month={selectedMonth} />
+              <DashboardCards month={selectedMonth} refreshKey={refreshKey} />
 
               <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-3">
-                <Charts month={selectedMonth} />
-                <RecentTransactions month={selectedMonth} />
+                <Charts month={selectedMonth} refreshKey={refreshKey} />
+                <RecentTransactions month={selectedMonth} refreshKey={refreshKey} />
               </div>
             </>
           )}

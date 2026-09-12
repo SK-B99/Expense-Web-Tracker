@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { api, setAccessToken } from './api-client';
+import { api, setAccessToken, registerAuthFailureHandler } from './api-client';
 
 type User = { id: number; name: string; email: string } | null;
 
@@ -18,7 +18,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User>(null);
   const [loading, setLoading] = useState(true);
 
-  // Try to restore session on mount using the refresh cookie
+ 
   useEffect(() => {
     (async () => {
       try {
@@ -29,13 +29,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (res.ok) {
           const data = await res.json();
           setAccessToken(data.accessToken);
-          // If your /auth/refresh doesn't return user info, add a /auth/me
-          // endpoint and call it here to populate `user`.
+          setUser(data.user);
         }
       } finally {
         setLoading(false);
       }
     })();
+  }, []);
+
+  useEffect(() => {
+    registerAuthFailureHandler(() => {
+      setUser(null);
+    });
   }, []);
 
   async function login(email: string, password: string) {

@@ -1,18 +1,23 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
+import { api } from "@/lib/api-client";
 
 type TransactionFormProps = {
   onClose: () => void;
+  onSuccess?: () => void;
 };
 
 export default function TransactionForm({
   onClose,
+  onSuccess,
 }: TransactionFormProps) {
   const dialogRef = useRef<HTMLFormElement>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Close with Escape
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -26,6 +31,35 @@ export default function TransactionForm({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [onClose]);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+
+    const form = new FormData(event.currentTarget);
+    const type = (form.get("type") as string).toUpperCase(); // "expense" -> "EXPENSE"
+    const amount = parseFloat(form.get("amount") as string);
+    const description = form.get("description") as string;
+    const category = form.get("category") as string;
+    const dateInput = form.get("date") as string; // "2026-09-12"
+
+    try {
+      setSubmitting(true);
+      await api.post("/transactions", {
+        type,
+        amount,
+        category,
+        description,
+        date: new Date(dateInput).toISOString(),
+      });
+      onSuccess?.();
+      onClose();
+    } catch (err) {
+      setError("Could not save the transaction. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <div
@@ -44,11 +78,7 @@ export default function TransactionForm({
 
       <form
         ref={dialogRef}
-        onSubmit={(event) => {
-          event.preventDefault();
-
-          // TODO: Save transaction
-        }}
+        onSubmit={handleSubmit}
         className="relative flex max-h-[90dvh] w-full flex-col overflow-hidden rounded-t-2xl bg-white shadow-2xl sm:max-w-md sm:rounded-2xl"
       >
         {/* Header */}
@@ -209,6 +239,10 @@ export default function TransactionForm({
                 className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
             </div>
+
+            {error && (
+              <p className="text-sm text-red-600">{error}</p>
+            )}
           </div>
         </div>
 
@@ -225,9 +259,10 @@ export default function TransactionForm({
 
             <button
               type="submit"
+              disabled={submitting}
               className="w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:w-auto"
             >
-              Save transaction
+              {submitting ? "Saving..." : "Save transaction"}
             </button>
           </div>
         </div>

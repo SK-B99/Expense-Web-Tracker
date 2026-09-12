@@ -1,4 +1,5 @@
 let accessToken: string | null = null;
+let onAuthFailure: (() => void) | null = null;
 
 export function setAccessToken(token: string | null) {
   accessToken = token;
@@ -6,6 +7,10 @@ export function setAccessToken(token: string | null) {
 
 export function getAccessToken() {
   return accessToken;
+}
+
+export function registerAuthFailureHandler(handler: () => void) {
+  onAuthFailure = handler;
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
@@ -32,6 +37,7 @@ async function request(path: string, options: RequestInit = {}, retry = true): P
       return request(path, options, false);
     }
     setAccessToken(null);
+    onAuthFailure?.();
   }
 
   return res;
