@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Request, Response } from 'express';
@@ -17,12 +19,17 @@ import { LoginCommand } from './commands/login/login.command';
 import { RefreshCommand } from './commands/refresh/refresh.command';
 import { LogoutCommand } from './commands/logout/logout.command';
 
+import { Public } from './decorators/public.decorator';
+import { CurrentUser, RequestUser } from './decorators/current-user.decorator';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly commandBus: CommandBus,
   ) {}
 
+  @Public()
   @Post('register')
   async register(
     @Body() dto: RegisterDto,
@@ -36,6 +43,7 @@ export class AuthController {
     );
   }
 
+  @Public()
   @Post('login')
   async login(
     @Body() dto: LoginDto,
@@ -59,7 +67,7 @@ export class AuthController {
             ? 'none'
             : 'lax',
         maxAge: 7 * 24 * 60 * 60 * 1000,
-        path: '/auth',
+        path: '/api/auth',
       },
     );
 
@@ -69,6 +77,7 @@ export class AuthController {
     };
   }
 
+  @Public()
   @Post('refresh')
   async refresh(
     @Req() req: Request,
@@ -99,7 +108,7 @@ export class AuthController {
             ? 'none'
             : 'lax',
         maxAge: 7 * 24 * 60 * 60 * 1000,
-        path: '/auth',
+        path: '/api/auth',
       },
     );
 
@@ -108,6 +117,7 @@ export class AuthController {
     };
   }
 
+  @Public()
   @Post('logout')
   async logout(
     @Req() req: Request,
@@ -131,12 +141,18 @@ export class AuthController {
           process.env.NODE_ENV === 'production'
             ? 'none'
             : 'lax',
-        path: '/auth',
+        path: '/api/auth',
       },
     );
 
     return {
       message: 'Logged out successfully',
     };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async me(@CurrentUser() user: RequestUser) {
+    return user;
   }
 }

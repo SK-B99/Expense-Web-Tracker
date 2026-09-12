@@ -1,10 +1,10 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
 import { randomUUID } from 'crypto';
 
 import { PrismaService } from '../../../prisma/prisma.service';
+import { hashToken } from '../../../common/utils/hash-token';
 import { RefreshCommand } from './refresh.command';
 
 interface RefreshPayload {
@@ -63,33 +63,20 @@ export class RefreshHandler
       );
     }
 
-    const refreshTokens =
-      await this.prisma.refreshToken.findMany({
+    const incomingHash = hashToken(refreshToken);
+
+    const storedToken =
+      await this.prisma.refreshToken.findUnique({
         where: {
-          userId: user.id,
-          expiresAt: {
-            gt: new Date(),
-          },
+          tokenHash: incomingHash,
         },
       });
 
-    let storedToken:
-      | (typeof refreshTokens)[number]
-      | undefined;
-
-    for (const token of refreshTokens) {
-      const matches = await bcrypt.compare(
-        refreshToken,
-        token.tokenHash,
-      );
-
-      if (matches) {
-        storedToken = token;
-        break;
-      }
-    }
-
-    if (!storedToken) {
+    if (
+      !storedToken ||
+      storedToken.userId !== user.id ||
+      storedToken.expiresAt <= new Date()
+    ) {
       throw new UnauthorizedException(
         'Refresh token has been revoked',
       );
@@ -101,7 +88,6 @@ export class RefreshHandler
       },
     });
 
-   
     const accessToken =
       await this.jwtService.signAsync(
         {
@@ -115,7 +101,6 @@ export class RefreshHandler
         },
       );
 
-   
     const newJti = randomUUID();
 
     const newRefreshToken =
@@ -131,11 +116,7 @@ export class RefreshHandler
         },
       );
 
-    
-    const newTokenHash = await bcrypt.hash(
-      newRefreshToken,
-      12,
-    );
+    const newTokenHash = hashToken(newRefreshToken);
 
     const expiresAt = new Date();
 

@@ -1,9 +1,26 @@
+
 'use client';
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { api, setAccessToken, registerAuthFailureHandler } from './api-client';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from 'react';
 
-type User = { id: number; name: string; email: string } | null;
+import {
+  api,
+  setAccessToken,
+  registerAuthFailureHandler,
+  refreshAccessToken,
+} from './api-client';
+
+type User = {
+  id: number;
+  name: string;
+  email: string;
+} | null;
 
 type AuthContextType = {
   user: User;
@@ -18,41 +35,54 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User>(null);
   const [loading, setLoading] = useState(true);
 
- 
   useEffect(() => {
-    (async () => {
+    async function restoreSession() {
+      const token = await refreshAccessToken();
+
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
-          method: 'POST',
-          credentials: 'include',
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setAccessToken(data.accessToken);
-          setUser(data.user);
-        }
+        const me = await api.get<User>('/auth/me');
+        setUser(me);
+      } catch {
+       
+        setAccessToken(null);
+        setUser(null);
       } finally {
         setLoading(false);
       }
-    })();
+    }
+
+    restoreSession();
   }, []);
 
   useEffect(() => {
     registerAuthFailureHandler(() => {
+      setAccessToken(null);
       setUser(null);
     });
   }, []);
 
   async function login(email: string, password: string) {
-    const data = await api.post('/auth/login', { email, password });
+    const data = await api.post<{
+      accessToken: string;
+      user: NonNullable<User>;
+    }>('/auth/login', { email, password });
+
     setAccessToken(data.accessToken);
     setUser(data.user);
   }
 
   async function logout() {
-    await api.post('/auth/logout');
-    setAccessToken(null);
-    setUser(null);
+    try {
+      await api.post('/auth/logout');
+    } finally {
+      setAccessToken(null);
+      setUser(null);
+    }
   }
 
   return (
@@ -63,7 +93,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 
 export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
-  return ctx;
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error('useAuth must be used within AuthProvider');
+  }
+
+  return context;
 }

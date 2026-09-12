@@ -6,7 +6,7 @@ import { GetDashboardQuery } from './queries/get-dashboard/get-dashboard.query';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
-UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('dashboard')
 export class DashboardController {
   constructor(

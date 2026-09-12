@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { randomUUID } from 'crypto';
 
 import { PrismaService } from '../../../prisma/prisma.service';
+import { hashToken } from '../../../common/utils/hash-token';
 import { LoginCommand } from './login.command';
 
 @CommandHandler(LoginCommand)
@@ -50,7 +51,6 @@ export class LoginHandler
       );
     }
 
-   
     const accessToken =
       await this.jwtService.signAsync(
         {
@@ -79,12 +79,7 @@ export class LoginHandler
         },
       );
 
-    
-    const tokenHash =
-      await bcrypt.hash(
-        refreshToken,
-        12,
-      );
+    const tokenHash = hashToken(refreshToken);
 
     const expiresAt = new Date();
 
