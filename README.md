@@ -1320,7 +1320,7 @@ git push origin feature/your-feature
 
 This project is currently available for personal and educational use.
 
-Add an appropriate open-source license to the repository if you intend to distribute the project publicly.
+
 
 ---
 
