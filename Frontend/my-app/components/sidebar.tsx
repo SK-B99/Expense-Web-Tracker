@@ -10,6 +10,8 @@ import {
   User,
   X,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
 
 const navItems = [
   {
@@ -46,6 +48,14 @@ export default function Sidebar({
   activeView,
   onViewChange,
 }: SidebarProps) {
+  const { user, logout } = useAuth();
+  const router = useRouter();
+
+  async function handleLogout() {
+    await logout();
+    router.push("/login");
+  }
+
   return (
     <>
       
@@ -227,7 +237,7 @@ export default function Sidebar({
               <button
                 type="button"
                 aria-label="Admin profile"
-                title="Admin Name"
+                title={user?.name ?? "Account"}
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100"
               >
                 <User size={18} />
@@ -242,11 +252,11 @@ export default function Sidebar({
                 ].join(" ")}
               >
                 <p className="truncate text-sm font-medium text-gray-900">
-                  Admin Name
+                  {user?.name ?? "..."}
                 </p>
 
-                <p className="text-xs text-gray-500">
-                  Administrator
+                <p className="truncate text-xs text-gray-500">
+                  {user?.email ?? ""}
                 </p>
               </div>
             </div>
@@ -255,6 +265,7 @@ export default function Sidebar({
           
           <button
             type="button"
+            onClick={handleLogout}
             className={[
               "mt-2 flex w-full items-center gap-3 rounded-lg",
               "px-3 py-2.5 text-sm text-red-600",
